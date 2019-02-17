@@ -1,5 +1,6 @@
-# java fold implementation
-I don't know why, but people so confused about that simple operation... 
+# left fold
+Kotlin to the rescue
+<!--I don't know why, but people so confused about that simple operation...-->
 
 _DomainEvents.kt_
 
@@ -22,6 +23,8 @@ fun CounterAggregate.apply(event: DomainEvent): CounterAggregate = when (event) 
   else -> throw IllegalStateException("unexpected unsupported domain event occur: $event")
 }
 ```
+
+_Some.java_
 
 ```java
 Optional<Aggregate> foldLeft(Aggregate initialState, DomainEvent... events) {

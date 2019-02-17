@@ -16,6 +16,17 @@ dependencies {
   annotationProcessor(platform("org.projectlombok:lombok:1.18.6"))
   annotationProcessor("org.projectlombok:lombok")
   testAnnotationProcessor("org.projectlombok:lombok")
+  // spekframework
+  val spekVersion: String by lazy { "2.0.0" }
+  testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")  {
+    exclude(group = "org.jetbrains.kotlin")
+  }
+  testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion") {
+    exclude(group = "org.jetbrains.kotlin")
+    exclude(group = "org.junit.platform")
+  }
+  // spek requires kotlin-reflect, can be omitted if already in the classpath
+  testRuntimeOnly("org.jetbrains.kotlin:kotlin-reflect")
 }
 
 application {
@@ -48,6 +59,10 @@ tasks {
       //showCauses = true
       //showStackTraces = true
       //logger.quiet("$events")
+      useJUnitPlatform {
+        includeEngines.add("spek2")
+      }
+      useJUnit()
     }
   }
 }
