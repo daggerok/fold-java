@@ -25,6 +25,7 @@ fun CounterAggregate.apply(event: DomainEvent): CounterAggregate = when (event) 
 
 ```java
 Optional<Aggregate> foldLeft(Aggregate initialState, DomainEvent... events) {
+  if (events.length <= 0) return Optional.empty();
   Aggregate accumulator = initialState;
   for (DomainEvent event : events)
     accumulator = DomainEvents.apply(accumulator, event);
