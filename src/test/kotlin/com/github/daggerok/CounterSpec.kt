@@ -8,7 +8,7 @@ import kotlin.test.assertFailsWith
 object CounterSpec : Spek({
   describe("Counter aggregate") {
 
-    it("should not be incremented when counter is not enabled.") {
+    it("should not be incremented when not enabled.") {
       val result = assertFailsWith<IllegalStateException> {
         CounterAggregate()
             .on(CounterIncrementedEvent())
@@ -16,7 +16,7 @@ object CounterSpec : Spek({
       assertEquals("Disabled counter cannot be incremented.", result.localizedMessage)
     }
 
-    it("should not be decremented when counter is not enabled.") {
+    it("should not be decremented when it's not enabled.") {
       val result = assertFailsWith<IllegalStateException> {
         CounterAggregate()
             .on(CounterDecrementedEvent())
@@ -24,7 +24,7 @@ object CounterSpec : Spek({
       assertEquals("Disabled counter cannot be decremented.", result.localizedMessage)
     }
 
-    it("should not enable when counter is already enabled.") {
+    it("should not enable when it's already enabled.") {
       val result = assertFailsWith<IllegalStateException> {
         CounterAggregate()
             .on(CounterEnabledEvent())
@@ -33,7 +33,7 @@ object CounterSpec : Spek({
       assertEquals("Counter was already enabled.", result.localizedMessage)
     }
 
-    it("should not be incremented when counter is disabled.") {
+    it("should not be incremented when it's disabled.") {
       val result = assertFailsWith<IllegalStateException> {
         CounterAggregate()
             .on(CounterEnabledEvent())
@@ -43,7 +43,7 @@ object CounterSpec : Spek({
       assertEquals("Disabled counter cannot be incremented.", result.localizedMessage)
     }
 
-    it("should not be decremented when counter is disabled.") {
+    it("should not be decremented when it's disabled.") {
       val result = assertFailsWith<IllegalStateException> {
         CounterAggregate()
             .on(CounterEnabledEvent())
@@ -53,7 +53,7 @@ object CounterSpec : Spek({
       assertEquals("Disabled counter cannot be decremented.", result.localizedMessage)
     }
 
-    it("should not be disabled when counter already disabled.") {
+    it("should not be disabled when it was already disabled.") {
       val result = assertFailsWith<IllegalStateException> {
         CounterAggregate()
             .on(CounterDisabledEvent())
