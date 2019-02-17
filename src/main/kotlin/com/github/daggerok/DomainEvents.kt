@@ -7,13 +7,13 @@ interface DomainEvent {
     get() = this.javaClass
 }
 
-class CounterCreatedEvent : DomainEvent
+class CounterEnabledEvent : DomainEvent
 class CounterIncrementedEvent : DomainEvent
 class CounterDecrementedEvent : DomainEvent
 class CounterDisabledEvent : DomainEvent
 
 fun CounterAggregate.apply(event: DomainEvent): CounterAggregate = when (event) {
-  is CounterCreatedEvent -> this.on(event)
+  is CounterEnabledEvent -> this.on(event)
   is CounterIncrementedEvent -> this.on(event)
   is CounterDecrementedEvent -> this.on(event)
   is CounterDisabledEvent -> this.on(event)
@@ -24,7 +24,7 @@ fun Collection<DomainEvent>.recreate(): CounterAggregate = this
     .onEach { println(it.type) }
     .fold(CounterAggregate()) { acc, domainEvent ->
       when (domainEvent) {
-        is CounterCreatedEvent -> acc.on(domainEvent)
+        is CounterEnabledEvent -> acc.on(domainEvent)
         is CounterIncrementedEvent -> acc.on(domainEvent)
         is CounterDecrementedEvent -> acc.on(domainEvent)
         is CounterDisabledEvent -> acc.on(domainEvent)
@@ -36,7 +36,7 @@ fun Collection<DomainEvent>.restoreFromSnapshot(snapshot: CounterAggregate): Cou
     .fold(snapshot) { acc, domainEvent ->
       println(domainEvent.type)
       return@fold when (domainEvent) {
-        is CounterCreatedEvent -> acc.on(domainEvent)
+        is CounterEnabledEvent -> acc.on(domainEvent)
         is CounterIncrementedEvent -> acc.on(domainEvent)
         is CounterDecrementedEvent -> acc.on(domainEvent)
         is CounterDisabledEvent -> acc.on(domainEvent)

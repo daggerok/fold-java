@@ -20,33 +20,33 @@ public class CounterAggregate {
 
   /* commands handling */
 
-  public CounterAggregate on(CounterCreatedEvent event) {
-    if (enabled) throw new IllegalStateException("already created");
+  public CounterAggregate on(CounterEnabledEvent event) {
+    if (enabled) throw new IllegalStateException("Counter was already enabled.");
     add(event);
     return applyFor(event);
   }
 
   public CounterAggregate on(CounterIncrementedEvent event) {
-    if (!enabled) throw new IllegalStateException("disabled");
+    if (!enabled) throw new IllegalStateException("Disabled counter cannot be incremented.");
     add(event);
     return applyFor(event);
   }
 
   public CounterAggregate on(CounterDecrementedEvent event) {
-    if (!enabled) throw new IllegalStateException("disabled");
+    if (!enabled) throw new IllegalStateException("Disabled counter cannot be decremented.");
     add(event);
     return applyFor(event);
   }
 
   public CounterAggregate on(CounterDisabledEvent event) {
-    if (!enabled) throw new IllegalStateException("disabled");
+    if (!enabled) throw new IllegalStateException("Disabled counter cannot be disabled.");
     add(event);
     return applyFor(event);
   }
 
   /* events handling */
 
-  public CounterAggregate applyFor(CounterCreatedEvent event) {
+  public CounterAggregate applyFor(CounterEnabledEvent event) {
     enabled = true;
     return this;
   }

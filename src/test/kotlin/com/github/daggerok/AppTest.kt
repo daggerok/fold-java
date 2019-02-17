@@ -7,11 +7,46 @@ import kotlin.test.assertTrue
 
 class AppTest {
 
+  @Test(expected = IllegalStateException::class)
+  fun `Enabled counter aggregate cannot be enabled`() {
+
+    CounterAggregate()
+        .on(CounterEnabledEvent())
+        .on(CounterEnabledEvent())
+  }
+
+  @Test(expected = IllegalStateException::class)
+  fun `Disabled counter cannot be incremented`() {
+
+    CounterAggregate()
+        .on(CounterEnabledEvent())
+        .on(CounterDisabledEvent())
+        .on(CounterIncrementedEvent())
+  }
+
+  @Test(expected = IllegalStateException::class)
+  fun `Disabled counter cannot be decremented`() {
+
+    CounterAggregate()
+        .on(CounterEnabledEvent())
+        .on(CounterDisabledEvent())
+        .on(CounterDecrementedEvent())
+  }
+
+  @Test(expected = IllegalStateException::class)
+  fun `Disabled counter aggregate cannot be diabled`() {
+
+    CounterAggregate()
+        .on(CounterEnabledEvent())
+        .on(CounterDisabledEvent())
+        .on(CounterDisabledEvent())
+  }
+
   @Test
   fun `DomainEvents should restore Aggregate from list of events and snapshot`() {
 
     val domainEvents1 = listOf(
-        CounterCreatedEvent(),
+        CounterEnabledEvent(),
         CounterIncrementedEvent()
     )
 
@@ -35,7 +70,7 @@ class AppTest {
   fun `DomainEvents should recreate Aggregate from list of events`() {
 
     val domainEvents = listOf(
-        CounterCreatedEvent(),
+        CounterEnabledEvent(),
         CounterIncrementedEvent(),
         CounterIncrementedEvent(),
         CounterDecrementedEvent()
@@ -51,7 +86,7 @@ class AppTest {
   fun `CounterAggregate should apply list of domain events to rebuild own state`() {
 
     val events = listOf(
-        CounterCreatedEvent(),
+        CounterEnabledEvent(),
         CounterIncrementedEvent(),
         CounterIncrementedEvent(),
         CounterDecrementedEvent()
