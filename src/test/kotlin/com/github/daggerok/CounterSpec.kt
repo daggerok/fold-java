@@ -5,10 +5,10 @@ import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-object CounterFailedSpec : Spek({
+object CounterSpec : Spek({
   describe("Counter aggregate") {
 
-    it("Not enabled counter cannot be incremented.") {
+    it("should not be incremented when counter is not enabled.") {
       val result = assertFailsWith<IllegalStateException> {
         CounterAggregate()
             .on(CounterIncrementedEvent())
@@ -16,7 +16,7 @@ object CounterFailedSpec : Spek({
       assertEquals("Disabled counter cannot be incremented.", result.localizedMessage)
     }
 
-    it("Not enabled counter cannot be decremented.") {
+    it("should not be decremented when counter is not enabled.") {
       val result = assertFailsWith<IllegalStateException> {
         CounterAggregate()
             .on(CounterDecrementedEvent())
@@ -24,7 +24,7 @@ object CounterFailedSpec : Spek({
       assertEquals("Disabled counter cannot be decremented.", result.localizedMessage)
     }
 
-    it("Counter was already enabled.") {
+    it("should not enable when counter is already enabled.") {
       val result = assertFailsWith<IllegalStateException> {
         CounterAggregate()
             .on(CounterEnabledEvent())
@@ -33,7 +33,7 @@ object CounterFailedSpec : Spek({
       assertEquals("Counter was already enabled.", result.localizedMessage)
     }
 
-    it("Disabled counter cannot be incremented.") {
+    it("should not be incremented when counter is disabled.") {
       val result = assertFailsWith<IllegalStateException> {
         CounterAggregate()
             .on(CounterEnabledEvent())
@@ -43,7 +43,7 @@ object CounterFailedSpec : Spek({
       assertEquals("Disabled counter cannot be incremented.", result.localizedMessage)
     }
 
-    it("Disabled counter cannot be decremented.") {
+    it("should not be decremented when counter is disabled.") {
       val result = assertFailsWith<IllegalStateException> {
         CounterAggregate()
             .on(CounterEnabledEvent())
@@ -53,7 +53,7 @@ object CounterFailedSpec : Spek({
       assertEquals("Disabled counter cannot be decremented.", result.localizedMessage)
     }
 
-    it("Disabled counter cannot be disabled again.") {
+    it("should not be disabled when counter already disabled.") {
       val result = assertFailsWith<IllegalStateException> {
         CounterAggregate()
             .on(CounterDisabledEvent())
@@ -61,7 +61,7 @@ object CounterFailedSpec : Spek({
       assertEquals("Disabled counter cannot be disabled.", result.localizedMessage)
     }
 
-    it("Disabled counter cannot be disabled again.") {
+    it("should be okay...") {
       val aggregate = CounterAggregate()
           .on(CounterEnabledEvent())
           .on(CounterIncrementedEvent())

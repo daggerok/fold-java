@@ -3,7 +3,6 @@ package com.github.daggerok
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
 class AppTest {
 
@@ -83,7 +82,7 @@ class AppTest {
   }
 
   @Test
-  fun `aggregate should apply list of domain events to rebuild own state`() {
+  fun `aggregate should replay list of domain events to rebuild it is own state`() {
 
     val events = listOf(
         CounterEnabledEvent(),
@@ -97,15 +96,14 @@ class AppTest {
     val aggregate1 = CounterAggregate()
     val result1 = events.fold(aggregate1) { acc, domainEvent -> acc.apply(domainEvent) }
     assertEquals(result1.counter, 1)
+    println("result1: $result1")
 
     val aggregate2 = CounterAggregate()
     val result2 = FoldJava.foldLeft(aggregate2, *events.toTypedArray())
     assertNotNull(result2)
-    assertTrue(result2.isPresent)
-    assertEquals(result2.get().counter, 1)
+    assertEquals(result2.counter, 1)
+    println("result2: $result2")
 
-    assertEquals(result1, result2.get())
-    println("result1: $result1")
-    println("result2: ${result2.get()}")
+    assertEquals(result1, result2)
   }
 }
