@@ -48,7 +48,7 @@ class AppTest {
   }
 
   @Test
-  fun `CounterAggregate should apply list of domain events`() {
+  fun `CounterAggregate should apply list of domain events to rebuild own state`() {
 
     val events = listOf(
         CounterCreatedEvent(),
