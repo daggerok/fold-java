@@ -48,7 +48,7 @@ class AppTest {
   }
 
   @Test
-  fun `should CounterAggregate apply`() {
+  fun `CounterAggregate should apply`() {
 
     val events = listOf(
         CounterCreatedEvent(),
