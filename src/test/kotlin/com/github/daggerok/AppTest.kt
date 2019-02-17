@@ -8,7 +8,7 @@ import kotlin.test.assertTrue
 class AppTest {
 
   @Test
-  fun `DomainEvents should restore from snapshot`() {
+  fun `DomainEvents should restore Aggregate from list of events and snapshot`() {
 
     val domainEvents1 = listOf(
         CounterCreatedEvent(),
@@ -32,7 +32,7 @@ class AppTest {
   }
 
   @Test
-  fun `DomainEvents should recreate`() {
+  fun `DomainEvents should recreate Aggregate from list of events`() {
 
     val domainEvents = listOf(
         CounterCreatedEvent(),
@@ -48,7 +48,7 @@ class AppTest {
   }
 
   @Test
-  fun `CounterAggregate should apply`() {
+  fun `CounterAggregate should apply list of domain events`() {
 
     val events = listOf(
         CounterCreatedEvent(),
