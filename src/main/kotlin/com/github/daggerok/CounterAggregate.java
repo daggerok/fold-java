@@ -1,39 +1,53 @@
 package com.github.daggerok;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+@ToString
+@EqualsAndHashCode
+@NoArgsConstructor
 public class CounterAggregate {
-  private final List<DomainEvent> events;
 
-  public CounterAggregate() {
-    events = new CopyOnWriteArrayList<>();
-  }
+  private final List<DomainEvent> events = new CopyOnWriteArrayList<>();
 
-  private int counter;
+  private boolean enabled;
+  @Getter private int counter;
 
-  /* command handling */
+  /* commands handling */
 
   public CounterAggregate on(CounterCreatedEvent event) {
+    if (enabled) throw new IllegalStateException("already created");
     add(event);
     return applyFor(event);
   }
 
   public CounterAggregate on(CounterIncrementedEvent event) {
+    if (!enabled) throw new IllegalStateException("disabled");
     add(event);
     return applyFor(event);
   }
 
   public CounterAggregate on(CounterDecrementedEvent event) {
+    if (!enabled) throw new IllegalStateException("disabled");
     add(event);
     return applyFor(event);
   }
 
-  /* event handling */
+  public CounterAggregate on(CounterDisabledEvent event) {
+    if (!enabled) throw new IllegalStateException("disabled");
+    add(event);
+    return applyFor(event);
+  }
+
+  /* events handling */
 
   public CounterAggregate applyFor(CounterCreatedEvent event) {
-    counter = 0;
+    enabled = true;
     return this;
   }
 
@@ -47,37 +61,14 @@ public class CounterAggregate {
     return this;
   }
 
-  /* private API */
+  public CounterAggregate applyFor(CounterDisabledEvent event) {
+    enabled = false;
+    return this;
+  }
+
+  /* private API: DRY code */
 
   private void add(DomainEvent event) {
     events.add(event);
-  }
-
-  /* instance public API */
-
-  public int getCounter() {
-    return counter;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    CounterAggregate that = (CounterAggregate) o;
-    return counter == that.counter &&
-        events.equals(that.events);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(events, counter);
-  }
-
-  @Override
-  public String toString() {
-    return "CounterAggregate {" +
-        "'amountOfEvents': '" + events.size() +
-        "', 'counter': '" + counter +
-        "'}";
   }
 }
