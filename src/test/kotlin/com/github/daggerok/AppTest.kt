@@ -8,7 +8,7 @@ import kotlin.test.assertTrue
 class AppTest {
 
   @Test(expected = IllegalStateException::class)
-  fun `Enabled counter aggregate cannot be enabled`() {
+  fun `enabled counter aggregate should not be enabled again`() {
 
     CounterAggregate()
         .on(CounterEnabledEvent())
@@ -16,7 +16,7 @@ class AppTest {
   }
 
   @Test(expected = IllegalStateException::class)
-  fun `Disabled counter cannot be incremented`() {
+  fun `disabled counter should not be incremented`() {
 
     CounterAggregate()
         .on(CounterEnabledEvent())
@@ -25,7 +25,7 @@ class AppTest {
   }
 
   @Test(expected = IllegalStateException::class)
-  fun `Disabled counter cannot be decremented`() {
+  fun `disabled counter should not be decremented`() {
 
     CounterAggregate()
         .on(CounterEnabledEvent())
@@ -34,7 +34,7 @@ class AppTest {
   }
 
   @Test(expected = IllegalStateException::class)
-  fun `Disabled counter aggregate cannot be diabled`() {
+  fun `disabled counter aggregate should not be disabled again`() {
 
     CounterAggregate()
         .on(CounterEnabledEvent())
@@ -43,7 +43,7 @@ class AppTest {
   }
 
   @Test
-  fun `DomainEvents should restore Aggregate from list of events and snapshot`() {
+  fun `should restore Aggregate from domain events collection list and snapshot`() {
 
     val domainEvents1 = listOf(
         CounterEnabledEvent(),
@@ -67,7 +67,7 @@ class AppTest {
   }
 
   @Test
-  fun `DomainEvents should recreate Aggregate from list of events`() {
+  fun `should recreate Aggregate from domain events list`() {
 
     val domainEvents = listOf(
         CounterEnabledEvent(),
@@ -83,7 +83,7 @@ class AppTest {
   }
 
   @Test
-  fun `CounterAggregate should apply list of domain events to rebuild own state`() {
+  fun `aggregate should apply list of domain events to rebuild own state`() {
 
     val events = listOf(
         CounterEnabledEvent(),
@@ -107,6 +107,5 @@ class AppTest {
     assertEquals(result1, result2.get())
     println("result1: $result1")
     println("result2: ${result2.get()}")
-
   }
 }

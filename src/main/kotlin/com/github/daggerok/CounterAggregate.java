@@ -3,12 +3,10 @@ package com.github.daggerok;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@ToString
 @EqualsAndHashCode
 @NoArgsConstructor
 public class CounterAggregate {
@@ -70,5 +68,14 @@ public class CounterAggregate {
 
   private void add(DomainEvent event) {
     events.add(event);
+  }
+
+  @Override
+  public String toString() {
+    return "CounterAggregate {" +
+        " events.size: " + events.size() +
+        ", enabled: " + enabled +
+        ", counter: " + counter +
+        " }";
   }
 }
