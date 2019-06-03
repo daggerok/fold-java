@@ -35,3 +35,11 @@ Optional<Aggregate> foldLeft(Aggregate initialState, DomainEvent... events) {
   return Optional.of(accumulator);
 }
 ```
+
+
+group:
+
+- [lazy-java](https://github.com/daggerok/lazy-java)
+- [java-examples](https://github.com/daggerok/java-examples)
+- [learn-jvm](https://github.com/daggerok/learn-jvm)
+- [fold-java](https://github.com/daggerok/fold-java)
