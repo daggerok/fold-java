@@ -1,4 +1,4 @@
-# left fold
+# left fold [![Build Status](https://travis-ci.org/daggerok/fold-java.svg?branch=master)](https://travis-ci.org/daggerok/fold-java)
 Kotlin to the rescue
 <!--I don't know why, but people so confused about that simple operation...-->
 

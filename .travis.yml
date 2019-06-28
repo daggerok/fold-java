@@ -1,0 +1,109 @@
+env:
+  global:
+    - TERM=dumb
+dist: trusty
+notifications:
+  email: false
+git:
+  quiet: true
+  depth: 1
+language: java
+jdk: openjdk8
+node_js: lts/*
+python: 3
+service:
+  - docker
+  - xvfb
+addons:
+  apt:
+    update: true
+    sources:
+      - google-chrome
+    packages:
+      - jq
+      - bash
+      - sudo
+      - lsof
+      - wget
+      - curl
+      - unzip
+      - docker-ce
+      - python3-pip
+      - libappindicator1
+      - fonts-liberation
+      - google-chrome-stable
+install: true
+before_install:
+  ## use instead:
+  ##
+  ## services:
+  ##   - xvfb
+  ##
+  #- export CHROME_BIN=/usr/bin/google-chrome
+  #- export DISPLAY=:99.0
+  #- sh -e /etc/init.d/xvfb start
+  ##
+  - export PATH=$HOME/.local/bin:$PATH
+  - pip3 install --user $(whoami) --upgrade pip
+  - pip install --user $(whoami) --upgrade httpie
+  - http --version --debug
+  - docker-compose -v
+  #
+  - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
+  - stop_any 80 8001 8002 8080 5432
+#stages:
+#  - test
+#  - deploy
+jobs:
+  include:
+    - stage: test
+      jdk: openjdk8
+      name: tests
+      script: cd $TRAVIS_BUILD_DIR && ./gradlew test
+    - stage: test
+      jdk: openjdk11
+      name: tests (openjdk11)
+      script: cd $TRAVIS_BUILD_DIR && ./gradlew test
+    - stage: test
+      jdk: openjdk8
+      name: default tasks
+      script: cd $TRAVIS_BUILD_DIR && ./gradlew
+    - stage: test
+      jdk: openjdk11
+      name: default tasks (openjdk11)
+      script: cd $TRAVIS_BUILD_DIR && ./gradlew
+    - stage: test
+      jdk: openjdk8
+      name: gradle dependencyUpdates
+      script: cd $TRAVIS_BUILD_DIR && ./gradlew dependencyUpdates
+    - stage: test
+      jdk: openjdk11
+      name: gradle dependencyUpdates (openjdk11)
+      script: cd $TRAVIS_BUILD_DIR && ./gradlew dependencyUpdates
+#    - stage: deploy
+#      #jdk: openjdk8
+#      jdk: openjdk11
+#      name: GitHub release and GitHub pages deployment (openjdk11)
+#      script: skip
+#      if: branch = "master" AND type NOT IN (pull_request)
+#      before_deploy:
+#        - if [ "$TRAVIS_PULL_REQUEST" != "false" ] || [ ".$TRAVIS_BRANCH" != ".master" ] ; then exit 0 ; fi
+#        - env
+#        # documentation
+#        - cd $TRAVIS_BUILD_DIR && ./gradlew npm_run_gh-pages
+#      deploy: &pages
+#        provider: pages
+#        skip-cleanup: true
+#        github-token: "$GITHUB_TOKEN"
+#        keep-history: true
+#        local-dir: .vuepress/dist
+#        target_branch: gh-pages
+#        on:
+#          branch: master
+#          condition: "$TRAVIS_PULL_REQUEST = false"
+cache:
+  directories:
+    - ~/.docker
+    - ~/.gradle
+  packages: true
+  pip: true

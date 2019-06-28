@@ -1,19 +1,25 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent.*
+
 plugins {
-  id("org.jetbrains.kotlin.jvm").version("1.3.21")
-  id("io.franzbecker.gradle-lombok").version("2.1")
+  idea
   application
+  id("org.jetbrains.kotlin.jvm").version("1.3.40")
+  id("io.franzbecker.gradle-lombok").version("2.1")
+  id("com.github.ben-manes.versions") version "0.21.0"
 }
 
 repositories {
   jcenter()
 }
 
+val lombokVersion = "1.18.8"
+
 dependencies {
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
   testImplementation("org.jetbrains.kotlin:kotlin-test")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
   // lombok for java classes... yes, I'm lazy:
-  annotationProcessor(platform("org.projectlombok:lombok:1.18.6"))
+  annotationProcessor(platform("org.projectlombok:lombok:$lombokVersion"))
   annotationProcessor("org.projectlombok:lombok")
   testAnnotationProcessor("org.projectlombok:lombok")
   // spekframework
@@ -45,8 +51,8 @@ sourceSets {
 
 // gradle wrapper configuration workaround
 tasks {
-  "wrapper"(Wrapper::class) {
-    gradleVersion = "5.2.1"
+  withType<Wrapper> {
+    gradleVersion = "5.5-rc-4"
   }
 }
 
@@ -56,9 +62,7 @@ tasks {
     testLogging {
       showExceptions = true
       showStandardStreams = true
-      //showCauses = true
-      //showStackTraces = true
-      //logger.quiet("$events")
+      events(PASSED, SKIPPED, FAILED)
       useJUnitPlatform {
         includeEngines.add("spek2")
       }
@@ -75,7 +79,7 @@ tasks {
   }
 }*/
 
-lombok.version = "1.18.6"
+lombok.version = lombokVersion
 
 // you don't need this lombok stuff...
 /*tasks {
