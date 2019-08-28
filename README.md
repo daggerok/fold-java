@@ -1,5 +1,8 @@
 # left fold [![Build Status](https://travis-ci.org/daggerok/fold-java.svg?branch=master)](https://travis-ci.org/daggerok/fold-java)
 Kotlin to the rescue
+
+[fold the universe: reduction with java 8 streams API](https://dzone.com/articles/folding-the-universe-part-iii-java-8-list-and-stre)
+
 <!--I don't know why, but people so confused about that simple operation...-->
 
 _DomainEvents.kt_
