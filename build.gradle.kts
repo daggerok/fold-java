@@ -1,29 +1,29 @@
-import org.gradle.api.tasks.testing.logging.TestLogEvent.*
-
 plugins {
   idea
   application
-  id("org.jetbrains.kotlin.jvm").version("1.3.40")
-  id("io.franzbecker.gradle-lombok").version("2.1")
-  id("com.github.ben-manes.versions") version "0.21.0"
+  id("org.jetbrains.kotlin.jvm").version("1.3.61")
+  id("io.franzbecker.gradle-lombok").version("3.2.0")
+  id("com.github.ben-manes.versions") version "0.27.0"
 }
 
 repositories {
   jcenter()
 }
 
-val lombokVersion = "1.18.8"
+val spekVersion = "2.0.9"
+val lombokVersion = "1.18.10"
+val junitJupiterVersion = "5.6.0"
 
 dependencies {
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
   testImplementation("org.jetbrains.kotlin:kotlin-test")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+  testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
   // lombok for java classes... yes, I'm lazy:
   annotationProcessor(platform("org.projectlombok:lombok:$lombokVersion"))
   annotationProcessor("org.projectlombok:lombok")
   testAnnotationProcessor("org.projectlombok:lombok")
   // spekframework
-  val spekVersion: String by lazy { "2.0.0" }
   testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")  {
     exclude(group = "org.jetbrains.kotlin")
   }
@@ -52,21 +52,25 @@ sourceSets {
 // gradle wrapper configuration workaround
 tasks {
   withType<Wrapper> {
-    gradleVersion = "5.5-rc-4"
+    gradleVersion = "6.1.1"
   }
 }
 
 // gradle tests output stdOut workaround
 tasks {
   test {
+    // useJUnit()
+    useJUnitPlatform {
+      includeEngines.add("spek2")
+    }
     testLogging {
       showExceptions = true
       showStandardStreams = true
-      events(PASSED, SKIPPED, FAILED)
-      useJUnitPlatform {
-        includeEngines.add("spek2")
-      }
-      useJUnit()
+      events(
+          org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
+          org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
+          org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+      )
     }
   }
 }
