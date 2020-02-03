@@ -13,4 +13,10 @@ class TODO_Distributed_Coordination_Tests {
     @Test void liveness_service_discovery() { }
 
     @Test void distributed_microservices_configuration() { }
+
+    class Challenges {
+        void concurrency_problems() {}
+        void distributed_failures() {}
+        void consistency_issues() {}
+    }
 }
