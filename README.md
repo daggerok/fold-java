@@ -1,4 +1,4 @@
-# left fold [![Build Status](https://travis-ci.org/daggerok/fold-java.svg?branch=master)](https://travis-ci.org/daggerok/fold-java)
+# left fold [![GraalVM](https://github.com/daggerok/fold-java/actions/workflows/ci.yaml/badge.svg)](https://github.com/daggerok/fold-java/actions/workflows/ci.yaml)
 Kotlin to the rescue
 
 [fold the universe: reduction with java 8 streams API](https://dzone.com/articles/folding-the-universe-part-iii-java-8-list-and-stre)
@@ -39,8 +39,13 @@ Optional<Aggregate> foldLeft(Aggregate initialState, DomainEvent... events) {
 }
 ```
 
+## Run tests
 
-group:
+```bash
+./gradlew clean test
+```
+
+## Links
 
 - [lazy-java](https://github.com/daggerok/lazy-java)
 - [java-examples](https://github.com/daggerok/java-examples)

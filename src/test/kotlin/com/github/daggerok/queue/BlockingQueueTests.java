@@ -1,5 +1,7 @@
 package com.github.daggerok.queue;
 
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -8,6 +10,7 @@ class QueueProcessor {
 
 }
 
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class BlockingQueueTests {
 
     /**

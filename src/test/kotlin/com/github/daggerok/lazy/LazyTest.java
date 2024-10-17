@@ -1,6 +1,7 @@
 package com.github.daggerok.lazy;
 
-import org.hamcrest.core.IsEqual;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicLong;
@@ -23,7 +24,8 @@ class Lazy<T> {
     }
 }
 
-public class LazyTest {
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+class LazyTest {
     @Test
     void test() {
         AtomicLong atomicLong = new AtomicLong(5);
