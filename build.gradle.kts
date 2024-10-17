@@ -16,6 +16,10 @@ val junitJupiterVersion = "5.6.0"
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+    testImplementation("org.assertj:assertj-core:3.26.3")
+    testImplementation("com.google.guava:guava:33.3.1-jre")
+
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
